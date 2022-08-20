@@ -38,7 +38,6 @@ services:
       PROMETEUSPBX_SECRET_KEY: ${PROMETEUSPBX_SECRET_KEY}
     volumes:
       - asterisk_lbdev:/etc/asterisk
-      - ${PROMETEUSPBX_SETTINGS}:/etc/prometeuspbx/prometeuspbx.yaml:ro
     ports:
       - "18800:8000"
     links:
