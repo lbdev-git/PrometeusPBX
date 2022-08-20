@@ -10,11 +10,11 @@ do
   fi
 done
 
-sed -i "s/#DB_HOST#/$ASTERISK_DATABASE_HOST/g" /etc/asterisk/*.conf
-sed -i "s/#DB_PORT#/$ASTERISK_DATABASE_PORT/g" /etc/asterisk/*.conf
-sed -i "s/#DB_USER#/$ASTERISK_DATABASE_USER/g" /etc/asterisk/*.conf
-sed -i "s/#DB_PASSWORD#/$ASTERISK_DATABASE_PASSWORD/g" /etc/asterisk/*.conf
-sed -i "s/#DB_NAME#/$ASTERISK_DATABASE/g" /etc/asterisk/*.conf
+sed -s -i "s/#DB_HOST#/$ASTERISK_DATABASE_HOST/g" /etc/asterisk/*.conf
+sed -s -i "s/#DB_PORT#/$ASTERISK_DATABASE_PORT/g" /etc/asterisk/*.conf
+sed -s -i "s/#DB_USER#/$ASTERISK_DATABASE_USER/g" /etc/asterisk/*.conf
+sed -s -i "s/#DB_PASSWORD#/$ASTERISK_DATABASE_PASSWORD/g" /etc/asterisk/*.conf
+sed -s -i "s/#DB_NAME#/$ASTERISK_DATABASE/g" /etc/asterisk/*.conf
 
 set -eo pipefail
 shopt -s nullglob
