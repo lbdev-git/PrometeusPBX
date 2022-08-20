@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  asterisk:
+    image: ghcr.io/lbdev-git/prometeuspbx_asterisk:latest
+    environment:
+      ASTERISK_DATABASE_HOST: ${ASTERISK_DATABASE_HOST}
+      ASTERISK_DATABASE: ${ASTERISK_DATABASE}
+      ASTERISK_DATABASE_USER: ${ASTERISK_DATABASE_USER}
+      ASTERISK_DATABASE_PASSWORD: ${ASTERISK_DATABASE_PASSWORD}
+      ASTERISK_DATABASE_PORT: ${ASTERISK_DATABASE_PORT}
+    volumes:
+      - asterisk_lbdev:/etc/asterisk
+    ports:
+      - ${PROMETEUSPBX_ASTERISK_SIP_PORT}:5060/udp
+      - ${PROMETEUSPBX_ASTERISK_SIP_PORT_SSL}:5061/udp
+      - "8088:8088"
+      - "8089:8089"
+      - "4569:4569/udp"
+
+  prometeuspbx:
+    image: ghcr.io/lbdev-git/prometeuspbx:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      PROMETEUSPBX_DATABASE_USER: ${POSTGRES_USER}
+      ASTERISK_DATABASE_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PROMETEUSPBX_DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      ASTERISK_DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      PROMETEUSPBX_DATABASE_HOST: ${POSTGRES_HOST}
+      ASTERISK_DATABASE_HOST: ${ASTERISK_DATABASE_HOST}
+      PROMETEUSPBX_DATABASE_PORT: ${POSTGRES_PORT}
+      ASTERISK_DATABASE_PORT: ${POSTGRES_PORT}
+      PROMETEUSPBX_DATABASE: ${PROMETEUSPBX_DATABASE}
+      ASTERISK_DATABASE: ${ASTERISK_DATABASE}
+      PROMETEUSPBX_DEBUG: ${PROMETEUSPBX_DEBUG}
+      PROMETEUSPBX_ALLOWED_HOSTS: ${PROMETEUSPBX_ALLOWED_HOSTS}
+      PROMETEUSPBX_SECRET_KEY: ${PROMETEUSPBX_SECRET_KEY}
+    volumes:
+      - asterisk_lbdev:/etc/asterisk
+      - ${PROMETEUSPBX_SETTINGS}:/etc/prometeuspbx/prometeuspbx.yaml:ro
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8081:8000"
+    links:
+      - redis
+      - asterisk
+  redis:
+    image: redis:7
+
+volumes:
+  asterisk_lbdev:
