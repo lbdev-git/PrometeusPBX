@@ -39,3 +39,4 @@ typing_extensions==4.2.0
 tzdata==2022.1
 virtualenv==20.14.1
 zope.interface==5.4.0
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
